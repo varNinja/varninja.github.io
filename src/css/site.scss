@@ -1,0 +1,459 @@
+// varNinja multi-site stylesheet
+// Designed by Kyle Permuy, 2018.
+
+/**
+ * Site-wide Mixins.
+ * Reusable patterns that apply to many different portions of the stylesheet.
+ **/
+
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content;
+  }
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  animation: #{$str};
+}
+
+/**
+ * Site-wide style variables
+ *
+ * Includes:
+ * - Font
+ * - Colors
+ * - Gradients
+ * - Animations
+ * - Element Sizing
+ **/
+
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400');
+$font: 'Lato', sans-serif;
+$font-size: 14px;
+
+$color-primary:       #B700FF;
+$color-primary-dark:  #610084;
+$color-primary-light: #E6C6F6;
+$color-magenta:       #B30090;
+$color-magenta-dark:  #5B0049;
+$color-magenta-light: #FEBCF1;
+$color-blue:          #007AB3;
+$color-blue-dark:     #003E5A;
+$color-blue-light:    #AEE0FE;
+$color-dark:          #2A202A;
+$color-light:         #FFFAFF;
+
+$gradient-mtb:
+  radial-gradient(circle at left, $color-magenta-dark -100%, transparent),
+  radial-gradient(circle at right, $color-blue-dark -100%, transparent);
+$gradient-magenta:
+  linear-gradient(0.9turn, $color-magenta-dark 0%, $color-primary-dark 100%);
+$gradient-blue:
+  linear-gradient(0.9turn, $color-primary-dark 0%, $color-blue-dark 100%);
+
+@include keyframes(hovering) {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(6px);
+  }
+}
+
+$header-height: 100vh;
+
+$width-medium: 800px;
+$width-large: 1000px;
+
+$left-right-padding: 20px;
+$section-top-padding: 20px;
+
+/*
+ * Default Classes
+ */
+body {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: $color-dark;
+  color: $color-light;
+  font-size: $font-size;
+  font-family: $font;
+  font-weight: 400;
+}
+
+.site-container {
+  display: block;
+  margin: 0 auto;
+  padding: 0 $left-right-padding;
+
+  @media screen and (min-width: $width-medium + 50px) {
+    width: $width-medium - $left-right-padding;
+  }
+  @media screen and (min-width: ($width-large + 100px)) {
+    width: $width-large - $left-right-padding;
+  }
+}
+
+/*
+ * Default link style, for use on default background which is light color
+ */
+a {
+  color: $color-primary;
+  text-decoration: none;
+}
+a:hover, a:visited {
+  text-decoration: $color-primary-dark;
+}
+
+/*
+ * Navigation menu classes
+ */
+.nav {
+  position: absolute;
+  height: 100px;
+  width: 100vw;
+  z-index: 10;
+
+  &-container {
+    @extend .site-container;
+    height: 100px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    color: $color-primary-dark;
+  }
+  &-title {
+    height: 90px;
+    width: 90px;
+    margin: 4px;
+    // border: 1px solid $color-light;
+    // border-radius: 4px;
+  }
+  &-list {
+    display: none;
+    text-decoration: none;
+    list-style-type: none;
+    vertical-align: bottom;
+    padding: 20px 10px;
+
+    @media screen and (min-width: $width-medium) {
+      display: flex;
+    }
+
+    li {
+      font-weight: 300;
+      font-size: 1.4em;
+      display: inline;
+      padding: 5px;
+
+      a {
+        color: $color-primary-light;
+      }
+      a:hover {
+        color: $color-light;
+      }
+    }
+  }
+  &-icon {
+    display: block;
+    position: absolute;
+    height: 45px;
+    width: 40px;
+    margin: 0px 20px;
+    right: 0;
+    background-image: url('../icons/menuicon.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @media screen and (min-width: $width-medium) {
+      display: none;
+    }
+  }
+}
+
+/*
+ * Website Top Header classes
+ */
+.header {
+  display: block;
+  height: $header-height;
+  background-color: $color-dark;
+
+  //@include animation('bkgColor 3s linear 1s infinite alternate');
+
+  &-container {
+    background: $gradient-mtb;
+    color: $color-light;
+    height: $header-height;
+  }
+  &-content {
+    @extend .site-container;
+    z-index: 3;
+    position: relative;
+  }
+
+  &--cluster-image {
+    background-image: url('../icons/icon-cluster.svg');
+    background-repeat: repeat-y;
+    background-size: cover;
+    right: 0;
+    width: 60vw;
+    height: 100vh;
+    z-index: 2;
+    position: absolute;
+
+    @media screen and (min-width: $width-medium) {
+      width: 50vw;
+    }
+  }
+  &--cta {
+    height: 30px;
+    width: 44px;
+    margin: 90vh auto 0 auto;
+    display: block;
+    left: 0;
+    right: 0;
+    position: absolute;
+    background-image: url('../icons/continue.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    @include animation('hovering 1s linear 1s infinite alternate');
+  }
+  &--text {
+    display: inline-block;
+    line-height: 1.4em;
+    font-size: 3em;
+    font-weight: 300;
+    padding: 0 5px;
+    margin: 20vh 0 0 0;
+    text-align: left;
+
+    @media screen and (min-width: $width-medium) {
+      margin: 35vh 0 0 0;
+    }
+  }
+}
+
+/*
+ * Website section classes
+ */
+.section {
+  padding: $section-top-padding $left-right-padding;
+  color: #392F62;
+  //overflow: hidden;
+
+  &-container {
+    @extend .site-container;
+    padding: 0;
+    h1 {
+      font-weight: 100;
+      letter-spacing: -0.5px;
+    }
+    p {
+      line-height: 1.6em;
+      font-weight: 400;
+    }
+  }
+  &-space-killer {
+    margin-top: -50px;
+  }
+  &-header-image {
+    padding: 20px;
+    height: 120px;
+  }
+}
+
+/*
+ * Cards
+ * Used to display small bits of text and media side by side in a row.
+ */
+.card {
+  display: block;
+
+  @media screen and (min-width: $width-medium) {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-single {
+    display: block;
+    margin: 20px 0px;
+    padding: 20px;
+  }
+  &-single-fill {
+    @extend .card-single;
+    width: unset;
+
+    @media screen and (min-width: $width-medium) {
+      width: 100%;
+    }
+  }
+  &-single-tri {
+    @extend .card-single;
+    @media screen and (min-width: $width-medium) {
+      width: 25%;
+      display: block;
+    }
+  }
+  &-body {
+    h1 {
+      font-weight: 100;
+    }
+    p {
+      font-weight: 400;
+    }
+  }
+}
+
+/*
+ * Section specific styles
+ */
+
+$about-picture-size: 260px;
+
+/**
+ * I'd like to explain this function quickly:
+ * My picture uses absolute positioning and "right: 0" to stay right.
+ * This solution sucks because the content area doesn't know what the
+ * picture boundaries are and content may start crossing under the picture.
+ * This function resizes the width of the content area, factoring in the size
+ * of the picture, and keeps it centered by translating it back to the left
+ * boundary of the current browser width. This is not be the optimal way to
+ * handle the CSS of the section or the picture, but it works. Just to note.
+ */
+@mixin about-section-size($screen-width) {
+  $_width: $screen-width - $left-right-padding - $about-picture-size;
+
+  width: $_width;
+  transform: translateX((($_width - $screen-width) / 2));
+}
+
+#about {
+  background: $gradient-blue;
+  color: $color-light;
+  margin-top: $section-top-padding * 2;
+  padding: 0px;
+
+  #facts {
+    &-card {
+      display: block;
+      min-height: 180px;
+      height: auto;
+      padding: $left-right-padding;
+    }
+    img {
+      width: 100px;
+    }
+  }
+
+  .section-container {
+    text-align: center;
+    padding-top: $section-top-padding + $about-picture-size;
+
+    h1 {
+      padding: 0px $left-right-padding;
+    }
+
+    @media screen and (min-width: $width-medium) {
+      padding-top: $section-top-padding;
+      @include about-section-size($width-medium);
+      h1 { text-align: left; }
+    }
+    @media screen and (min-width: $width-large) {
+      @include about-section-size($width-large);
+    }
+  }
+
+  &-picture {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    border: 2px solid $color-primary-light;
+    width: $about-picture-size;
+    height: $about-picture-size;
+    margin-top: -$section-top-padding;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media screen and (min-width: $width-medium) {
+      margin-left: 0;
+      margin-right: $about-picture-size / 10;
+      left: unset;
+    }
+  }
+}
+
+#services {
+  background-color: $color-dark;
+  color: $color-light;
+
+  .section-container {
+    @media screen and (min-width: $width-medium) {
+      display: flex;
+    }
+  }
+
+  #vn-logo {
+    display: block;
+    padding: 20px;
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+  }
+
+  button {
+    height: 44px;
+    border: 1px solid $color-primary-light;
+    background-color: $color-dark;
+    color: $color-primary-light;
+    font-weight: 100;
+    font-size: 1em;
+    margin: 20px 0;
+  }
+  button:hover {
+    border-color: $color-blue-light;
+    color: $color-blue-light;
+  }
+}
+
+#projects {
+  .card {
+    text-align: center;
+  }
+}
+
+/*
+ * Footer style
+ */
+footer {
+  padding: 10px;
+  background-color: $color-dark;
+  color: $color-light;
+  a {
+    color: $color-primary-light
+  }
+  a:hover {
+    color: $color-light;
+  }
+  p {
+    display: block;
+    font-size: 0.85em;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
